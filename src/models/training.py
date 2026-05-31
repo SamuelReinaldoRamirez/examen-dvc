@@ -19,7 +19,7 @@ model.fit(X_train, y_train)
 
 os.makedirs("models", exist_ok=True)
 
-model_path = "models/trained_model.joblib"
+model_path = "models/trained_model.pkl"
 joblib.dump(model, model_path)
 
 print(f"Model saved at {model_path}")

@@ -10,7 +10,7 @@ y_train = pd.read_csv("data/processed/y_train.csv")
 rf = RandomForestRegressor(random_state=42)
 
 param_grid = {
-    "n_estimators": [100, 500],
+    "n_estimators": [100, 1000],
     "max_depth": [None, 10, 20],
     "min_samples_split": [2, 5]
 }

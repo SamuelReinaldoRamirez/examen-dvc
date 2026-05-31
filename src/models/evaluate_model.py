@@ -4,19 +4,15 @@ import os
 import json
 from sklearn.metrics import mean_squared_error, r2_score
 
-# 📥 Load test data
 X_test = pd.read_csv("data/processed/X_test_scaled.csv")
 y_test = pd.read_csv("data/processed/y_test.csv").iloc[:, 0]
 
-# 📥 Load trained model
-model = joblib.load("models/trained_model.joblib")
+model = joblib.load("models/trained_model.pkl")
 
 print("Model loaded ✔")
 
-# 🔮 Predictions
 y_pred = model.predict(X_test)
 
-# 📊 Metrics
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
