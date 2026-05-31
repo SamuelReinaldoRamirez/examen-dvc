@@ -1,0 +1,146 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python src/data/split.py
+    deps:
+    - path: data/raw/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+    - path: src/data/split.py
+      hash: md5
+      md5: 8fc42babb3e4aac65c45229118131a3f
+      size: 699
+    outs:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 3683b6b67454edac5b76948ed6d7eaf8
+      size: 59834
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: b101407ca5ef72131102f44eb36bc1f2
+      size: 238608
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 8976f7c0d83d884ff54858660ecf2ab6
+      size: 6540
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 6c707d524478c58caccc0294f0bf886e
+      size: 25867
+  viz_split:
+    cmd: python src/data/help_viz_split.py
+    deps:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 3683b6b67454edac5b76948ed6d7eaf8
+      size: 59834
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: b101407ca5ef72131102f44eb36bc1f2
+      size: 238608
+    - path: src/data/help_viz_split.py
+      hash: md5
+      md5: 3afdb765c18a1491a1b43f5cf104ead8
+      size: 805
+    outs:
+    - path: metrics/y_distribution.png
+      hash: md5
+      md5: 270b349b0d74d87915e1e5fc6b2b116a
+      size: 15187
+  scale:
+    cmd: python src/data/scale.py
+    deps:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 3683b6b67454edac5b76948ed6d7eaf8
+      size: 59834
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: b101407ca5ef72131102f44eb36bc1f2
+      size: 238608
+    - path: src/data/scale.py
+      hash: md5
+      md5: 16dc891d586eeeb2d4a9b24c5cee2998
+      size: 853
+    outs:
+    - path: data/processed/X_test_scaled.csv
+      hash: md5
+      md5: f8213377829e63cbd32ec17adc9e454c
+      size: 57016
+    - path: data/processed/X_train_scaled.csv
+      hash: md5
+      md5: 1177d180a8a69f63ae9f86b7e88b233a
+      size: 227315
+  grid_search:
+    cmd: python src/models/grid_search.py
+    deps:
+    - path: data/processed/X_train_scaled.csv
+      hash: md5
+      md5: 1177d180a8a69f63ae9f86b7e88b233a
+      size: 227315
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 6c707d524478c58caccc0294f0bf886e
+      size: 25867
+    - path: src/models/grid_search.py
+      hash: md5
+      md5: 498a8baa0e62a337c305cbf1b7a8f510
+      size: 783
+    outs:
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 3e80766190eb1ccb00e635eccb7af77d
+      size: 68
+  train_model:
+    cmd: python src/models/training.py
+    deps:
+    - path: data/processed/X_train_scaled.csv
+      hash: md5
+      md5: 1177d180a8a69f63ae9f86b7e88b233a
+      size: 227315
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 6c707d524478c58caccc0294f0bf886e
+      size: 25867
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 3e80766190eb1ccb00e635eccb7af77d
+      size: 68
+    - path: src/models/training.py
+      hash: md5
+      md5: ed674a9660ab2c18e67a9212ea8ca648
+      size: 553
+    outs:
+    - path: models/trained_model.joblib
+      hash: md5
+      md5: b7f8bcccf9c6c6cebf1d5273506f7412
+      size: 10832705
+  evaluate_model:
+    cmd: python src/models/evaluate_model.py
+    deps:
+    - path: data/processed/X_test_scaled.csv
+      hash: md5
+      md5: f8213377829e63cbd32ec17adc9e454c
+      size: 57016
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 8976f7c0d83d884ff54858660ecf2ab6
+      size: 6540
+    - path: models/trained_model.joblib
+      hash: md5
+      md5: b7f8bcccf9c6c6cebf1d5273506f7412
+      size: 10832705
+    - path: src/models/evaluate_model.py
+      hash: md5
+      md5: 7db519466c15d4c48d7243a5bf65e174
+      size: 903
+    outs:
+    - path: data/processed/predictions.csv
+      hash: md5
+      md5: 33c1dfa4672ba31cf06d4b9bfa9e4f5e
+      size: 69573
+    - path: metrics/scores.json
+      hash: md5
+      md5: 5d8949960ac84abf7a8f54625c35827a
+      size: 64

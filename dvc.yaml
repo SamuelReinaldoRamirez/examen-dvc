@@ -1,0 +1,57 @@
+stages:
+  split:
+    cmd: python src/data/split.py
+    deps:
+    - data/raw/raw.csv
+    - src/data/split.py
+    outs:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - data/processed/y_test.csv
+    - data/processed/y_train.csv
+  viz_split:
+    cmd: python src/data/help_viz_split.py
+    deps:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - src/data/help_viz_split.py
+    outs:
+    - metrics/y_distribution.png
+  scale:
+    cmd: python src/data/scale.py
+    deps:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - src/data/scale.py
+    outs:
+    - data/processed/X_test_scaled.csv
+    - data/processed/X_train_scaled.csv
+  grid_search:
+    cmd: python src/models/grid_search.py
+    deps:
+    - data/processed/X_train_scaled.csv
+    - data/processed/y_train.csv
+    - src/models/grid_search.py
+    outs:
+    - models/best_params.pkl
+  train_model:
+    cmd: python src/models/training.py
+    deps:
+    - data/processed/X_train_scaled.csv
+    - data/processed/y_train.csv
+    - models/best_params.pkl
+    - src/models/training.py
+    outs:
+    - models/trained_model.joblib
+  evaluate_model:
+    cmd: python src/models/evaluate_model.py
+    deps:
+    - data/processed/X_test_scaled.csv
+    - data/processed/y_test.csv
+    - models/trained_model.joblib
+    - src/models/evaluate_model.py
+    outs:
+    - data/processed/predictions.csv
+    metrics:
+    - metrics/scores.json:
+        cache: false
