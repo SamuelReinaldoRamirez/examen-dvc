@@ -1,0 +1,6 @@
+dagshub==0.7.0
+dvc==3.67.1
+joblib==1.5.3
+numpy==2.4.6
+pandas==3.0.3
+scikit-learn==1.8.0
