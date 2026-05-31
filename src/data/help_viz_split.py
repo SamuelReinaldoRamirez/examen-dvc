@@ -6,12 +6,12 @@ import os
 
 os.makedirs("metrics", exist_ok=True)
 
-df = pd.read_csv("data/raw_data/raw.csv")
+df = pd.read_csv("data/raw/raw.csv")
 
 y = df["silica_concentrate"]
 
-y_train = pd.read_csv("data/processed_data/y_train.csv").iloc[:, 0]
-y_test = pd.read_csv("data/processed_data/y_test.csv").iloc[:, 0]
+y_train = pd.read_csv("data/processed/y_train.csv").iloc[:, 0]
+y_test = pd.read_csv("data/processed/y_test.csv").iloc[:, 0]
 
 print("GLOBAL")
 print(y.describe())
