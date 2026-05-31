@@ -53,5 +53,4 @@ stages:
     outs:
     - data/processed/predictions.csv
     metrics:
-    - metrics/scores.json:
-        cache: false
+    - metrics/scores.json
